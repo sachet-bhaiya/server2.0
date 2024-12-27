@@ -2,7 +2,7 @@ use actix_web::{web, App, HttpServer, Responder, HttpResponse};
 use std::sync::{Arc, Mutex};
 
 // Shared state for storing screenshot data
-type ScreenshotData = Arc<Mutex<Option<Vec<u8>>>>
+type ScreenshotData = Arc<Mutex<Option<Vec<u8>>>>;  // Add a semicolon here
 
 // Handler for the root endpoint
 async fn root() -> impl Responder {
@@ -33,7 +33,7 @@ async fn get_screenshot(state: web::Data<ScreenshotData>) -> impl Responder {
     }
 }
 
-#[actix_web::main]
+#[actix_web::main]  // This macro makes the main function async
 async fn main() -> std::io::Result<()> {
     // Shared state for screenshot data
     let screenshot_data = Arc::new(Mutex::new(None::<Vec<u8>>));
