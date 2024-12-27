@@ -36,7 +36,7 @@ async fn get_screenshot(state: web::Data<ScreenshotData>) -> impl Responder {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     // Shared state for screenshot data
-    let screenshot_data = Arc::new(Mutex::new(None::<Vec<u8>>>()));
+    let screenshot_data = Arc::new(Mutex::new(None::<Vec<u8>>>));
 
     let bind_address = "0.0.0.0:8080"; // Bind to all interfaces on port 8080
     println!("Starting server on {}", bind_address);
