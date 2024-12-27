@@ -17,7 +17,7 @@ async fn post_screenshot(
     let mut screenshot_data = state.lock().unwrap();
     *screenshot_data = Some(data.to_vec());
     println!("Screenshot data received and stored.");
-    HttpResponse::Ok().json({ "message": "Screenshot data received and stored successfully" })
+    HttpResponse::Ok().json(serde_json::json!({ "message": "Screenshot data received and stored successfully" }))
 }
 
 // Handler for GET /screenshot
@@ -29,14 +29,14 @@ async fn get_screenshot(state: web::Data<ScreenshotData>) -> impl Responder {
             .content_type("application/octet-stream")
             .body(data.clone())
     } else {
-        HttpResponse::NotFound().json({ "error": "No screenshot data available" })
+        HttpResponse::NotFound().json(serde_json::json!({ "error": "No screenshot data available" }))
     }
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     // Shared state for screenshot data
-    let screenshot_data = Arc::new(Mutex::new(None));
+    let screenshot_data = Arc::new(Mutex::new(None::<Vec<u8>>>()));
 
     let bind_address = "0.0.0.0:8080"; // Bind to all interfaces on port 8080
     println!("Starting server on {}", bind_address);
