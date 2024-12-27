@@ -2,7 +2,7 @@ use actix_web::{web, App, HttpServer, Responder, HttpResponse};
 use std::sync::{Arc, Mutex};
 
 // Shared state for storing screenshot data
-type ScreenshotData = Arc<Mutex<Option<Vec<u8>>>>;
+type ScreenshotData = Arc<Mutex<Option<Vec<u8>>>>
 
 // Handler for the root endpoint
 async fn root() -> impl Responder {
@@ -36,7 +36,7 @@ async fn get_screenshot(state: web::Data<ScreenshotData>) -> impl Responder {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     // Shared state for screenshot data
-    let screenshot_data = Arc::new(Mutex::new(None::<Vec<u8>>>));
+    let screenshot_data = Arc::new(Mutex::new(None::<Vec<u8>>));
 
     let bind_address = "0.0.0.0:8080"; // Bind to all interfaces on port 8080
     println!("Starting server on {}", bind_address);
