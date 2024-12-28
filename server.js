@@ -1,35 +1,23 @@
-const fastify = require('fastify')({ logger: true });
+from fastapi import FastAPI
+from typing import Optional
 
-let screenshotData = null;
+app = FastAPI()
 
-fastify.get('/', async (request, reply) => {
-  return { message: 'screen share server' };
-});
+screenshot_data: Optional[bytes] = None
 
-fastify.post('/screenshot', async (request, reply) => {
-  screenshotData = request.body; // Store the binary data
-  return 'uploaded';
-});
+@app.get("/")
+def read_root():
+    return {"server": "screen share server"}
 
-fastify.get('/screenshot', async (request, reply) => {
-  if (screenshotData) {
-    reply.header('Content-Type', 'application/octet-stream');
-    return screenshotData; 
-  } else {
-    reply.status(404).send('error');
-  }
-});
+@app.post("/screenshot")
+async def receive_screenshot(data: bytes):
+    global screenshot_data
+    screenshot_data = data
+    return "uploaded"
 
-const start = async () => {
-  const PORT = process.env.PORT || 3000;
-  const HOST = '0.0.0.0'; 
-  try {
-    await fastify.listen({ port: PORT, host: HOST });
-    console.log(`Server is running on http://${HOST}:${PORT}`);
-  } catch (err) {
-    fastify.log.error(err);
-    process.exit(1);
-  }
-};
-
-start();
+@app.get("/screenshot")
+def get_screenshot():
+    if screenshot_data:
+        return screenshot_data
+    else:
+        return "error"
